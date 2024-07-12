@@ -1,29 +1,118 @@
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeSong } from '../../features/songs/songslice';
+import { Link,useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaRegHeart, FaSun, FaMoon } from 'react-icons/fa';
+import axios from 'axios';
 
 function Likedsongs() {
   const songs = useSelector((state) => state.songs.likedSongs);
-  const remove = useDispatch((state) => state.songs.likedSongs);
+  const dispatch = useDispatch();
+  const [darkMode, setDarkMode] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
+  const cardRefs = useRef([]);
 
-  const removesong = (song) =>{
-    remove(removeSong(song))
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const Username = sessionStorage.getItem('Username');
+        const Password = sessionStorage.getItem('Password');
+        const response = await axios.post('http://localhost:3000/GetUserData', { Username, Password });
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const removeSongHandler = async(song) => {
+    const id = song.id;
+    const name = song.name;
+    const data = song.Song;
+    const Username = sessionStorage.getItem('Username');
+      const Password = sessionStorage.getItem('Password');
+      
+      await axios.post('http://localhost:3000/RemoveLikedSongs',{id,name,data,Username,Password})
+      navigate('/songs',{replace:true});
+      
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   return (
-    <div>
-      <h1>Liked Songs</h1>
-      {songs.length > 0 ? (
-        songs.map((song) => (
-          <div key={song.id}>
-            <h2>{song.title}</h2>
-            <audio controls src={song.song}></audio>
-            <button onClick={() => removesong(song)}>remove</button>
-          </div>
-        ))
-      ) : (
-        <p>No liked songs yet.</p>
-      )}
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      exit={{ opacity: 0 }}
+      className={`min-h-screen flex flex-col items-center justify-center transition-all duration-500 ${
+        darkMode ? 'bg-gradient-to-br from-gray-900 to-black' : 'bg-gradient-to-br from-purple-600 to-indigo-600'
+      }`}
+    >
+      <div className="max-w-7xl w-full mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-500">
+        <div className="flex justify-end mb-4">
+          <motion.button
+            onClick={toggleDarkMode}
+            className={`px-4 py-2 rounded-lg ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'} hover:bg-opacity-75 focus:outline-none`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+          >
+            {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
+          </motion.button>
+        </div>
+        <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'} mb-6`}>Your Liked Songs</h1>
+        <AnimatePresence>
+          {userData && userData.Likedsongs.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {userData.Likedsongs.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  ref={(el) => (cardRefs.current[index] = el)}
+                  className={`p-4 rounded-lg shadow-md transition-all duration-500 ${
+                    darkMode ? 'bg-gradient-to-t from-gray-700 to-gray-900' : 'bg-gradient-to-t from-white to-gray-200'
+                  }`}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Link to={`/single/${item.id}`} className="block mb-2">
+                    <h2 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{item.name}</h2>
+                  </Link>
+                  <motion.button
+                    onClick={() => removeSongHandler(item)}
+                    className={`bg-red-500 transition duration-300 hover:bg-red-600 text-white py-2 px-4 rounded-lg focus:outline-none flex items-center mt-2 ${darkMode ? 'bg-opacity-75' : ''}`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <FaRegHeart className="mr-2" />
+                    Remove
+                  </motion.button>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className={`text-lg ${darkMode ? 'text-white' : 'text-gray-800'}`}
+            >
+              {userData && userData.Likedsongs.length === 0 ? 'You haven\'t liked any songs yet.' : 'Loading...'}
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
   );
 }
 

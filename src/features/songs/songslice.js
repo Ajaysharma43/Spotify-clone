@@ -10,6 +10,7 @@ const songsSlice = createSlice({
   reducers: {
     addSong: (state, action) => {
       state.likedSongs.push(action.payload);
+      console.log(action);
     },
     removeSong: (state, action) => {
       state.likedSongs = state.likedSongs.filter(song => song.id !== action.payload.id);
