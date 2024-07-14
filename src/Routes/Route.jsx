@@ -1,11 +1,15 @@
 import { useRoutes } from "react-router-dom";
 import Single from "../Components/Single-Track/Single";
-import NewData from "../Components/Data/Data";
 import Likedsongs from "../Components/songlist/songlist";
 import Homeapage from "../pages/Homepage";
 import Login from "../Components/Login/Login";
 import Signup from "../Components/Signup/Signup";
 import Footer from "../Components/Footer/Footer";
+import SongUpload from "../Dashboard/SongUpload/SongUpload";
+import UserData from "../Dashboard/UserData/UserData";
+import AdminNavbar from "../Dashboard/AdminNavbar/AdminNavbar";
+import DataUploadPage from "../Dashboard/AdminPages/DataUploadPage/DataUploadPage";
+import UserDataPage from "../Dashboard/AdminPages/UserDataPages/UserDataPage";
 
 const MyRoutes = () =>{
     let element = useRoutes([
@@ -14,7 +18,9 @@ const MyRoutes = () =>{
         {path:"/songs" , element:<Likedsongs/>},
         {path:"/Login",element:<Login/>},
         {path:"/Signup",element:<Signup/>},
-        {path:"/Footer",element:<Footer/>}
+        {path:"/Footer",element:<Footer/>},
+        {path:"/DataUploadPage",element:<DataUploadPage/>},
+        {path:"/UserDataPage",element:<UserDataPage/>}
     ])
 
     return element;

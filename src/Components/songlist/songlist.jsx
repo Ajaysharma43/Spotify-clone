@@ -36,9 +36,13 @@ function Likedsongs() {
     const Username = sessionStorage.getItem('Username');
       const Password = sessionStorage.getItem('Password');
       
-      await axios.post('http://localhost:3000/RemoveLikedSongs',{id,name,data,Username,Password})
-      navigate('/songs',{replace:true});
-      
+      const response = await axios.post('http://localhost:3000/RemoveLikedSongs',{id,name,data,Username,Password})
+      console.log(response.data);
+      if(response.data == 'removed')
+      {
+        
+        navigate(0);
+      }
   };
 
   const toggleDarkMode = () => {
@@ -67,7 +71,7 @@ function Likedsongs() {
             {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
           </motion.button>
         </div>
-        <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'} mb-6`}>Your Liked Songs</h1>
+        <h1 className={`text-3xl font-bold ${darkMode ? 'text-black' : 'text-gray-800'} mb-6`}>Your Liked Songs</h1>
         <AnimatePresence>
           {userData && userData.Likedsongs.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -105,7 +109,7 @@ function Likedsongs() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className={`text-lg ${darkMode ? 'text-white' : 'text-gray-800'}`}
+              className={`text-lg ${darkMode ? 'text-black' : 'text-gray-800'}`}
             >
               {userData && userData.Likedsongs.length === 0 ? 'You haven\'t liked any songs yet.' : 'Loading...'}
             </motion.p>
