@@ -3,11 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaSun, FaMoon } from "react-icons/fa";
-import image from "../../assets/download.png";
 
-const linkUrl = `http://localhost:3000/data`;
+const linkUrl = `http://localhost:3000/SongsData`;
 
 function Single() {
+  const [Data,SetData] = useState([]);
   const [single, setSingle] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioState, setAudioState] = useState("Play");
@@ -33,8 +33,21 @@ function Single() {
         console.error("Error fetching single:", error);
       }
     };
+
+    const GetData = async () => {
+      try {
+        const response = await axios.get(`${linkUrl}`)
+        console.log(response.data);
+        SetData(response.data)
+      }
+      catch (error) {
+        console.error("error fetching data: " , error);
+      }
+    };
+
+    GetData();
     getSingle();
-  }, [newId]);
+  }, []);
 
   async function fetchSingleAndUpdate(id) {
     try {
@@ -93,17 +106,23 @@ function Single() {
   };
 
   const playNext = () => {
-    const nextId = isNaN(id) ? 0 : +id + 1;
-    fetchSingleAndUpdate(nextId);
-    navigate(`/Single/${nextId}`, { replace: true });
+    const current = Data.findIndex((single) => single._id === id);
+    console.log(current);
+    const next = (current + 1) % Data.length;
+    console.log(next);
+    
+    navigate(`/Single/${Data[next]._id}`,{replace: true});
+    navigate(0);
   };
 
   const playPrevious = () => {
-    const prevId = isNaN(id) ? 0 : +id - 1;
-    if (prevId >= 0) {
-      fetchSingleAndUpdate(prevId);
-      navigate(`/Single/${prevId}`, { replace: true });
-    }
+    const current = Data.findIndex((single) => single._id === id);
+    console.log(current);
+    const next = (current - 1) % Data.length;
+    console.log(next);
+    
+    navigate(`/Single/${Data[next]._id}`,{replace: true});
+    navigate(0);
   };
 
   const toggleDarkMode = () => {
@@ -140,7 +159,7 @@ function Single() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <h1 className="text-4xl font-bold mb-2">{single.name}</h1>
+          <h1 className="text-4xl font-bold mb-2">{single.Song_Name}</h1>
           <p className="text-xl text-gray-400">{single.artist}</p>
         </motion.div>
         <motion.div 
@@ -150,14 +169,14 @@ function Single() {
           className="w-64 h-64 mb-4"
         >
           <img 
-            src={image}
+            src={single.Song_Image}
             alt="Album Cover"
             className="w-full h-full object-cover rounded-lg shadow-lg"
           />
         </motion.div>
         <audio
           controls
-          src={single.song}
+          src={single.Song}
           ref={audioControl}
           className="hidden"
         />

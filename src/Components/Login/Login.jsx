@@ -133,10 +133,10 @@ const Login = ({ darkMode }) => {
           </div>
           <button
             type="submit"
-            className={`w-full py-3 px-4 rounded-lg focus:outline-none ${
+            className={`w-full py-3 px-4 rounded-lg focus:outline-none  ${
               darkMode
                 ? "bg-gray-700 text-white hover:bg-gray-600"
-                : "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-blue-500 text-white hover:bg-blue-600 transition"
             }`}
           >
             Login
