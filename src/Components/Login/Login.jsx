@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,7 +12,7 @@ const Login = ({ darkMode }) => {
   const navigate = useNavigate();
 
   useEffect(()=>{
-      Cookies.remove('isAuthenticated');
+      sessionStorage.removeItem('isAuthenticated');
   },[]);
 
   const handleSubmit = async (event) => {
@@ -42,7 +41,7 @@ const Login = ({ darkMode }) => {
           theme: "dark",
           transition: Slide,
         });
-        Cookies.set('isAuthenticated','Authenticated',{expires:1});
+        sessionStorage.setItem('isAuthenticated','Authenticated',{expires:1});
 
         sessionStorage.setItem('Username',name);
         sessionStorage.setItem('Password',password);

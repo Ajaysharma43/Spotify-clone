@@ -7,13 +7,15 @@ import { FaSun, FaMoon } from "react-icons/fa";
 const linkUrl = `http://localhost:3000/SongsData`;
 
 function Single() {
-  const [Data,SetData] = useState([]);
+  const [Data, SetData] = useState([]);
   const [single, setSingle] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioState, setAudioState] = useState("Play");
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
+  const [Liked, setLiked] = useState({});
+  const [like,setlike] = useState('');
 
   const { id } = useParams();
   const [newId, setId] = useState(id);
@@ -28,6 +30,7 @@ function Single() {
       try {
         const response = await axios.get(`${linkUrl}/${newId}`);
         setSingle(response.data);
+        console.log(single);
         audioControl.current.load();
       } catch (error) {
         console.error("Error fetching single:", error);
@@ -36,15 +39,36 @@ function Single() {
 
     const GetData = async () => {
       try {
-        const response = await axios.get(`${linkUrl}`)
+        const response = await axios.get(`${linkUrl}`);
         console.log(response.data);
-        SetData(response.data)
-      }
-      catch (error) {
-        console.error("error fetching data: " , error);
+        SetData(response.data);
+      } catch (error) {
+        console.error("error fetching data: ", error);
       }
     };
 
+    const Likeed = async () => {
+      const username = sessionStorage.getItem("Username");
+      const password = sessionStorage.getItem("Password");
+
+      const response = await axios.post("http://localhost:3000/Liked", {
+        username,
+        password,
+      });
+      console.log(response.data);
+      setLiked(response.data);
+      console.log(Liked.data.Likedsongs._id);
+      if(Liked.data.Likedsongs._id == single._id){
+        setlike('Liked')
+      }
+      else
+      {
+        setlike('Unliked')
+      }
+      console.log(like);
+    };
+
+    Likeed();
     GetData();
     getSingle();
   }, []);
@@ -110,8 +134,8 @@ function Single() {
     console.log(current);
     const next = (current + 1) % Data.length;
     console.log(next);
-    
-    navigate(`/Single/${Data[next]._id}`,{replace: true});
+
+    navigate(`/Single/${Data[next]._id}`, { replace: true });
     navigate(0);
   };
 
@@ -120,8 +144,8 @@ function Single() {
     console.log(current);
     const next = (current - 1) % Data.length;
     console.log(next);
-    
-    navigate(`/Single/${Data[next]._id}`,{replace: true});
+
+    navigate(`/Single/${Data[next]._id}`, { replace: true });
     navigate(0);
   };
 
@@ -129,9 +153,28 @@ function Single() {
     setDarkMode(!darkMode);
   };
 
+  const handleLiked = async (id) => {
+    console.log(id);
+    console.log(Liked.data.Likedsongs);
+    const length = Liked.data.Likedsongs.length;
+    console.log(length);
+    for(let i = 0 ; i <= length ; i++)
+    {
+      if(id == Liked.data.Likedsongs)
+      {
+        console.log("liked");
+      }
+      else
+      {
+        console.log("unliked");
+      }
+    }
+  };
+
+
   return (
     <AnimatePresence>
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 50 }}
@@ -153,7 +196,7 @@ function Single() {
             {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
           </motion.button>
         </div>
-        <motion.div 
+        <motion.div
           className="text-center mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -162,13 +205,13 @@ function Single() {
           <h1 className="text-4xl font-bold mb-2">{single.Song_Name}</h1>
           <p className="text-xl text-gray-400">{single.artist}</p>
         </motion.div>
-        <motion.div 
+        <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           className="w-64 h-64 mb-4"
         >
-          <img 
+          <img
             src={single.Song_Image}
             alt="Album Cover"
             className="w-full h-full object-cover rounded-lg shadow-lg"
@@ -180,7 +223,7 @@ function Single() {
           ref={audioControl}
           className="hidden"
         />
-        <motion.input 
+        <motion.input
           type="range"
           value={(currentTime / duration) * 100 || 0}
           onChange={handleRangeChange}
@@ -194,35 +237,53 @@ function Single() {
           }`}
         />
         <div className="flex space-x-4 mt-4">
-          <motion.button 
+          <motion.button
             onClick={togglePlayPause}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className={`px-6 py-2 rounded-md shadow-md focus:outline-none ${
-              darkMode ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-blue-500 text-white hover:bg-blue-600"
+              darkMode
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-blue-500 text-white hover:bg-blue-600"
             }`}
           >
             {audioState}
           </motion.button>
-          <motion.button 
+          <motion.button
             onClick={playPrevious}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className={`px-6 py-2 rounded-md shadow-md focus:outline-none ${
-              darkMode ? "bg-gray-700 text-white hover:bg-gray-600" : "bg-gray-500 text-white hover:bg-gray-400"
+              darkMode
+                ? "bg-gray-700 text-white hover:bg-gray-600"
+                : "bg-gray-500 text-white hover:bg-gray-400"
             }`}
           >
             Previous
           </motion.button>
-          <motion.button 
+          <motion.button
             onClick={playNext}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className={`px-6 py-2 rounded-md shadow-md focus:outline-none ${
-              darkMode ? "bg-gray-700 text-white hover:bg-gray-600" : "bg-gray-500 text-white hover:bg-gray-400"
+              darkMode
+                ? "bg-gray-700 text-white hover:bg-gray-600"
+                : "bg-gray-500 text-white hover:bg-gray-400"
             }`}
           >
             Next
+          </motion.button>
+          <motion.button
+            onClick={() => handleLiked(single._id)}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className={`px-6 py-2 rounded-full shadow-md focus:outline-none ${
+              darkMode
+                ? "bg-gray-700 text-white hover:bg-gray-600"
+                : "bg-gray-500 text-white hover:bg-gray-400"
+            }`}
+          >
+            like
           </motion.button>
         </div>
       </motion.div>
