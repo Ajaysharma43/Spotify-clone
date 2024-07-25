@@ -19,7 +19,7 @@ function Likedsongs() {
       try {
         const Username = sessionStorage.getItem('Username');
         const Password = sessionStorage.getItem('Password');
-        const response = await axios.post('http://localhost:3000/GetUserData', { Username, Password });
+        const response = await axios.post('https://spotify-clone-backend-f1ve.onrender.com/GetUserData', { Username, Password });
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -36,7 +36,7 @@ function Likedsongs() {
     const Username = sessionStorage.getItem('Username');
       const Password = sessionStorage.getItem('Password');
       
-      const response = await axios.post('http://localhost:3000/RemoveLikedSongs',{id,name,data,Username,Password})
+      const response = await axios.post('https://spotify-clone-backend-f1ve.onrender.com/RemoveLikedSongs',{id,name,data,Username,Password})
       console.log(response.data);
       if(response.data == 'removed')
       {

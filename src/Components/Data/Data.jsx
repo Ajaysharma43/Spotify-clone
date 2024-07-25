@@ -1,21 +1,26 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { addSong, removeSong } from "../../features/songs/songslice";
 import { FaHeart, FaRegHeart, FaSun, FaMoon } from "react-icons/fa";
+import LoadingBar from "react-top-loading-bar";
 
 function NewData() {
   const [data, setData] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
+  const [progress, setprogress] = useState(null);
   const dispatch = useDispatch();
   const likedSongs = useSelector((state) => state.songs.likedSongs);
 
   useEffect(() => {
     const getData = async () => {
-      const response = await axios.get("http://localhost:3000/SongsData");
+      setprogress(10);
+      const response = await axios.get("https://spotify-clone-backend-f1ve.onrender.com/SongsData");
+      setprogress(40);
       setData(response.data);
+      setprogress(100);
     };
     getData();
   }, []);
@@ -34,6 +39,13 @@ function NewData() {
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
       }`}
     >
+      <LoadingBar 
+      color="green"
+      progress={progress}
+      height={4}
+      shadow={true}
+      background="blue"
+      />
       <div className="container mx-auto py-8">
         <div className="flex justify-end mb-4">
           <motion.button
@@ -90,8 +102,6 @@ function NewData() {
                   </h1>
                 </Link>
                 <div className="flex justify-between items-center mb-4">
-                  
-
                   <span
                     className={`px-2 py-1 rounded-lg ${
                       darkMode

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaSun, FaMoon } from "react-icons/fa";
 
-const linkUrl = `http://localhost:3000/SongsData`;
+const linkUrl = `https://spotify-clone-backend-f1ve.onrender.com/SongsData`;
 
 function Single() {
   const [Data, SetData] = useState([]);
@@ -60,7 +60,7 @@ function Single() {
         const username = sessionStorage.getItem("Username");
         const password = sessionStorage.getItem("Password");
 
-        const result = await axios.post("http://localhost:3000/Liked", {
+        const result = await axios.post("https://spotify-clone-backend-f1ve.onrender.com/Liked", {
           username,
           password,
         });
@@ -166,7 +166,7 @@ function Single() {
     let i;
     const username = sessionStorage.getItem("Username");
     const password = sessionStorage.getItem("Password");
-    const result = await axios.post("http://localhost:3000/UpdateLiked", {
+    const result = await axios.post("https://spotify-clone-backend-f1ve.onrender.com/UpdateLiked", {
       username,
       password,
       name,

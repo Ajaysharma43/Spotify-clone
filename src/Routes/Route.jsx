@@ -5,9 +5,6 @@ import Homeapage from "../pages/Homepage";
 import Login from "../Components/Login/Login";
 import Signup from "../Components/Signup/Signup";
 import Footer from "../Components/Footer/Footer";
-import SongUpload from "../Dashboard/SongUpload/SongUpload";
-import UserData from "../Dashboard/UserData/UserData";
-import AdminNavbar from "../Dashboard/AdminNavbar/AdminNavbar";
 import DataUploadPage from "../Dashboard/AdminPages/DataUploadPage/DataUploadPage";
 import UserDataPage from "../Dashboard/AdminPages/UserDataPages/UserDataPage";
 

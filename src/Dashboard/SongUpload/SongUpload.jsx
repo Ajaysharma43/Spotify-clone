@@ -18,7 +18,7 @@ const SongUpload = () => {
     const SongGenre = SongGenreRef.current.value;
     console.log(SongName);
 
-    await axios.post('http://localhost:3000/SongUpload',{Song,SongImage,SongName,SongArtist,SongGenre});
+    await axios.post('https://spotify-clone-backend-f1ve.onrender.com/SongUpload',{Song,SongImage,SongName,SongArtist,SongGenre});
   }
 
 

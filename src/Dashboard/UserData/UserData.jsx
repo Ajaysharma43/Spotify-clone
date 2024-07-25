@@ -7,7 +7,7 @@ const UserData = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/users/1')
+    axios.get('https://spotify-clone-backend-f1ve.onrender.com/users/1')
       .then((response) => {
         setUserData(response.data);
         setLoading(false);
