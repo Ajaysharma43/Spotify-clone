@@ -29,7 +29,7 @@ function Single() {
     const getSingle = async () => {
       try {
         const response = await axios.get(`${linkUrl}/${id}`);
-        setSingle(response.data);
+        setSingle(response.data.data);
         console.log(single);
         // Load audio control (if needed) here
       } catch (error) {
