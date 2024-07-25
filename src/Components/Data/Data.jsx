@@ -19,7 +19,7 @@ function NewData() {
       setprogress(10);
       const response = await axios.get("https://spotify-clone-backend-f1ve.onrender.com/SongsData");
       setprogress(40);
-      setData(response.data);
+      setData(response.data.data);
       setprogress(100);
     };
     getData();
