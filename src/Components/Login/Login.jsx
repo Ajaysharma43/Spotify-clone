@@ -23,7 +23,7 @@ const Login = ({ darkMode }) => {
     console.log(name);
 
     try {
-      const response = await axios.post("http://localhost:3000/Login", {
+      const response = await axios.post("https://spotify-clone-backend-f1ve.onrender.com/Login", {
         name,
         password,
       });

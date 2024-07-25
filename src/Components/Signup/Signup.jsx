@@ -14,7 +14,7 @@ const Signup = ({ darkMode }) => {
     const email = Email.current.value;
     
     try {
-      await axios.post('http://localhost:3000/signup', { Name, password, email });
+      await axios.post('https://spotify-clone-backend-f1ve.onrender.com/signup', { Name, password, email });
       console.log("Data saved");
     } catch (error) {
       console.error("Error saving data", error);
