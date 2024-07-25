@@ -41,8 +41,8 @@ function Single() {
     const GetData = async () => {
       try {
         const response = await axios.get(`${linkUrl}`);
-        console.log(response.data);
-        SetData(response.data);
+        console.log(response.data.data);
+        SetData(response.data.data);
       } catch (error) {
         console.error("error fetching data: ", error);
       }
