@@ -27,9 +27,9 @@ const Login = ({ darkMode }) => {
         name,
         password,
       });
-      console.log(response.data);
-      setdata(response.data);
-      if (response.data == 'verified') {
+      console.log(response.data.message);
+      setdata(response.data.message);
+      if (response.data.message == 'verified') {
         toast.success("Logged in", {
           position: "top-right",
           autoClose: 5000,
