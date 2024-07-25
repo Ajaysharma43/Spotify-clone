@@ -8,14 +8,14 @@ const linkUrl = `http://localhost:3000/SongsData`;
 
 function Single() {
   const [Data, SetData] = useState([]);
-  const [single, setSingle] = useState({});
+  const [single, setSingle] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioState, setAudioState] = useState("Play");
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
   const [Liked, setLiked] = useState({});
-  const [like,setlike] = useState('');
+  const [like, setlike] = useState("Unliked");
 
   const { id } = useParams();
   const [newId, setId] = useState(id);
@@ -28,12 +28,13 @@ function Single() {
   useEffect(() => {
     const getSingle = async () => {
       try {
-        const response = await axios.get(`${linkUrl}/${newId}`);
+        const response = await axios.get(`${linkUrl}/${id}`);
         setSingle(response.data);
         console.log(single);
-        audioControl.current.load();
+        // Load audio control (if needed) here
       } catch (error) {
         console.error("Error fetching single:", error);
+        // Display an error message to the user (e.g., set an error state)
       }
     };
 
@@ -47,31 +48,39 @@ function Single() {
       }
     };
 
-    const Likeed = async () => {
-      const username = sessionStorage.getItem("Username");
-      const password = sessionStorage.getItem("Password");
-
-      const response = await axios.post("http://localhost:3000/Liked", {
-        username,
-        password,
-      });
-      console.log(response.data);
-      setLiked(response.data);
-      console.log(Liked.data.Likedsongs._id);
-      if(Liked.data.Likedsongs._id == single._id){
-        setlike('Liked')
-      }
-      else
-      {
-        setlike('Unliked')
-      }
-      console.log(like);
-    };
-
-    Likeed();
-    GetData();
+    
     getSingle();
+    GetData();
+    
   }, []);
+
+  useEffect(()=>{
+    const Likeed = async () => {
+      try {
+        const username = sessionStorage.getItem("Username");
+        const password = sessionStorage.getItem("Password");
+
+        const result = await axios.post("http://localhost:3000/Liked", {
+          username,
+          password,
+        });
+        console.log(result.data.data);
+
+        const likedSongs = result.data.data.Likedsongs;
+        console.log("Liked songs:", likedSongs);
+
+        const isLiked = likedSongs.some(
+          (song) => song.name === single.Song_Name
+        );
+        console.log(isLiked);
+        setlike(isLiked ? "liked" : "Unliked");
+        console.log("Song liked status:", like);
+      } catch (error) {
+        console.error("Error fetching liked songs:", error);
+      }
+    };
+    Likeed();
+  },[])
 
   async function fetchSingleAndUpdate(id) {
     try {
@@ -153,24 +162,25 @@ function Single() {
     setDarkMode(!darkMode);
   };
 
-  const handleLiked = async (id) => {
-    console.log(id);
-    console.log(Liked.data.Likedsongs);
-    const length = Liked.data.Likedsongs.length;
-    console.log(length);
-    for(let i = 0 ; i <= length ; i++)
-    {
-      if(id == Liked.data.Likedsongs)
-      {
-        console.log("liked");
-      }
-      else
-      {
-        console.log("unliked");
-      }
+  const handleLiked = async (name, song, id) => {
+    let i;
+    const username = sessionStorage.getItem("Username");
+    const password = sessionStorage.getItem("Password");
+    const result = await axios.post("http://localhost:3000/UpdateLiked", {
+      username,
+      password,
+      name,
+      song,
+      id,
+    });
+
+    console.log(result.data);
+    if (result.data == "added") {
+      setlike("liked");
+    } else {
+      setlike("Unliked");
     }
   };
-
 
   return (
     <AnimatePresence>
@@ -274,7 +284,9 @@ function Single() {
             Next
           </motion.button>
           <motion.button
-            onClick={() => handleLiked(single._id)}
+            onClick={() =>
+              handleLiked(single.Song_Name, single.Song, single.id)
+            }
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className={`px-6 py-2 rounded-full shadow-md focus:outline-none ${
@@ -283,7 +295,7 @@ function Single() {
                 : "bg-gray-500 text-white hover:bg-gray-400"
             }`}
           >
-            like
+            {like}
           </motion.button>
         </div>
       </motion.div>
