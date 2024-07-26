@@ -7,6 +7,8 @@ import { addSong, removeSong } from "../../features/songs/songslice";
 import { FaHeart, FaRegHeart, FaSun, FaMoon } from "react-icons/fa";
 import LoadingBar from "react-top-loading-bar";
 
+const url  = import.meta.env.VITE_API_URL;
+
 function NewData() {
   const [data, setData] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
@@ -17,7 +19,7 @@ function NewData() {
   useEffect(() => {
     const getData = async () => {
       setprogress(10);
-      const response = await axios.get("https://spotify-clone-backend-f1ve.onrender.com/SongsData");
+      const response = await axios.get(`${url}/SongsData`);
       setprogress(40);
       setData(response.data.data);
       setprogress(100);

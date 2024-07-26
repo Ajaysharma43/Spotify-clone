@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaSun, FaMoon } from "react-icons/fa";
 
-const linkUrl = `https://spotify-clone-backend-f1ve.onrender.com/SongsData`;
+const linkUrl = import.meta.env.VITE_API_URL;
 
 function Single() {
   const [Data, SetData] = useState([]);
@@ -60,7 +60,7 @@ function Single() {
         const username = sessionStorage.getItem("Username");
         const password = sessionStorage.getItem("Password");
 
-        const result = await axios.post("https://spotify-clone-backend-f1ve.onrender.com/Liked", {
+        const result = await axios.post(`${linkUrl}/Liked`, {
           username,
           password,
         });
@@ -166,7 +166,7 @@ function Single() {
     let i;
     const username = sessionStorage.getItem("Username");
     const password = sessionStorage.getItem("Password");
-    const result = await axios.post("https://spotify-clone-backend-f1ve.onrender.com/UpdateLiked", {
+    const result = await axios.post(`${linkUrl}/UpdateLiked`, {
       username,
       password,
       name,

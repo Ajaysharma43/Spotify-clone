@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
+const linkUrl = import.meta.env.VITE_API_URL;
+
 const Signup = ({ darkMode }) => {
   const Username = useRef(null);
   const Password = useRef(null);
@@ -14,7 +16,7 @@ const Signup = ({ darkMode }) => {
     const email = Email.current.value;
     
     try {
-      await axios.post('https://spotify-clone-backend-f1ve.onrender.com/signup', { Name, password, email });
+      await axios.post(`${linkUrl}/signup`, { Name, password, email });
       console.log("Data saved");
     } catch (error) {
       console.error("Error saving data", error);

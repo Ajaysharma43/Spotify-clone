@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaRegHeart, FaSun, FaMoon } from 'react-icons/fa';
 import axios from 'axios';
 
+const linkUrl = import.meta.env.VITE_API_URL;
+
 function Likedsongs() {
   const songs = useSelector((state) => state.songs.likedSongs);
   const dispatch = useDispatch();
@@ -19,7 +21,7 @@ function Likedsongs() {
       try {
         const Username = sessionStorage.getItem('Username');
         const Password = sessionStorage.getItem('Password');
-        const response = await axios.post('https://spotify-clone-backend-f1ve.onrender.com/GetUserData', { Username, Password });
+        const response = await axios.post(`${linkUrl}/GetUserData`, { Username, Password });
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -36,7 +38,7 @@ function Likedsongs() {
     const Username = sessionStorage.getItem('Username');
       const Password = sessionStorage.getItem('Password');
       
-      const response = await axios.post('https://spotify-clone-backend-f1ve.onrender.com/RemoveLikedSongs',{id,name,data,Username,Password})
+      const response = await axios.post(`${linkUrl}/RemoveLikedSongs`,{id,name,data,Username,Password})
       console.log(response.data);
       if(response.data == 'removed')
       {
