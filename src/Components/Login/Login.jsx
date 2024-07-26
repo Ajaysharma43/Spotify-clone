@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
+const url = import.meta.env.VITE_API_URL;
+
 const Login = ({ darkMode }) => {
   const [data,setdata] = useState('');
   const Username = useRef(null);
@@ -12,6 +14,8 @@ const Login = ({ darkMode }) => {
   const navigate = useNavigate();
 
   useEffect(()=>{
+    
+    console.log(url);
       sessionStorage.removeItem('isAuthenticated');
   },[]);
 
@@ -23,7 +27,7 @@ const Login = ({ darkMode }) => {
     console.log(name);
 
     try {
-      const response = await axios.post("https://spotify-clone-backend-f1ve.onrender.com/Login", {
+      const response = await axios.post(`${url}/Login`, {
         name,
         password,
       });
