@@ -28,7 +28,7 @@ function Single() {
   useEffect(() => {
     const getSingle = async () => {
       try {
-        const response = await axios.get(`${linkUrl}/${id}`);
+        const response = await axios.get(`${linkUrl}/SongsData/${id}`);
         setSingle(response.data.data);
         console.log(single);
         // Load audio control (if needed) here
@@ -40,7 +40,7 @@ function Single() {
 
     const GetData = async () => {
       try {
-        const response = await axios.get(`${linkUrl}`);
+        const response = await axios.get(`${linkUrl}/SongsData`);
         console.log(response.data.data);
         SetData(response.data.data);
       } catch (error) {
