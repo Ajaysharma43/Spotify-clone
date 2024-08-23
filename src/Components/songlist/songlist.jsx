@@ -112,7 +112,7 @@ function Likedsongs() {
                   <Link to={`/single/${item.id}`} className="block mb-2">
                     <motion.img
                       src={item.Image}
-                      className="w-full h-full object-cover rounded-lg shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl"
+                      className="w-48 h-48 object-cover rounded-lg shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl"
                       alt={item.name}
                       whileHover={{ scale: 1.05 }}
                     />
@@ -124,6 +124,7 @@ function Likedsongs() {
                       {item.name}
                     </h2>
                   </Link>
+
                   <motion.button
                     onClick={() => removeSongHandler(item)}
                     className={`bg-red-500 transition duration-300 hover:bg-red-600 text-white py-2 px-4 rounded-lg focus:outline-none flex items-center mt-2 ${
