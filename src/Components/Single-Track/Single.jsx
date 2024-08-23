@@ -8,14 +8,13 @@ const linkUrl = import.meta.env.VITE_API_URL;
 
 function Single() {
   const [Data, SetData] = useState([]);
-  const [single, setSingle] = useState([]);
+  const [single, setSingle] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioState, setAudioState] = useState("Play");
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
-  const [Liked, setLiked] = useState({});
-  const [like, setlike] = useState("Unliked");
+  const [like, setLike] = useState("Unliked");
 
   const { id } = useParams();
   const [newId, setId] = useState(id);
@@ -30,7 +29,7 @@ function Single() {
       try {
         const response = await axios.get(`${linkUrl}/SongsData/${id}`);
         setSingle(response.data.data);
-        console.log(single);
+        console.log(response.data.data);
         // Load audio control (if needed) here
       } catch (error) {
         console.error("Error fetching single:", error);
@@ -48,14 +47,12 @@ function Single() {
       }
     };
 
-    
     getSingle();
     GetData();
-    
-  }, []);
+  }, [id]);
 
-  useEffect(()=>{
-    const Likeed = async () => {
+  useEffect(() => {
+    const checkLikedStatus = async () => {
       try {
         const username = sessionStorage.getItem("Username");
         const password = sessionStorage.getItem("Password");
@@ -64,6 +61,7 @@ function Single() {
           username,
           password,
         });
+
         console.log(result.data.data);
 
         const likedSongs = result.data.data.Likedsongs;
@@ -73,14 +71,17 @@ function Single() {
           (song) => song.name === single.Song_Name
         );
         console.log(isLiked);
-        setlike(isLiked ? "liked" : "Unliked");
+        setLike(isLiked ? "Liked" : "Unliked");
         console.log("Song liked status:", like);
       } catch (error) {
         console.error("Error fetching liked songs:", error);
       }
     };
-    Likeed();
-  },[])
+
+    if (single.Song_Name) {
+      checkLikedStatus();
+    }
+  }, [single]);
 
   async function fetchSingleAndUpdate(id) {
     try {
@@ -151,10 +152,10 @@ function Single() {
   const playPrevious = () => {
     const current = Data.findIndex((single) => single._id === id);
     console.log(current);
-    const next = (current - 1) % Data.length;
-    console.log(next);
+    const previous = (current - 1 + Data.length) % Data.length;
+    console.log(previous);
 
-    navigate(`/Single/${Data[next]._id}`, { replace: true });
+    navigate(`/Single/${Data[previous]._id}`, { replace: true });
     navigate(0);
   };
 
@@ -162,23 +163,24 @@ function Single() {
     setDarkMode(!darkMode);
   };
 
-  const handleLiked = async (name, song, id) => {
-    let i;
+  const handleLiked = async (name, song, id, image) => {
     const username = sessionStorage.getItem("Username");
     const password = sessionStorage.getItem("Password");
+
     const result = await axios.post(`${linkUrl}/UpdateLiked`, {
       username,
       password,
       name,
       song,
       id,
+      image,
     });
 
     console.log(result.data);
-    if (result.data == "added") {
-      setlike("liked");
+    if (result.data === "added") {
+      setLike("Liked");
     } else {
-      setlike("Unliked");
+      setLike("Unliked");
     }
   };
 
@@ -285,7 +287,7 @@ function Single() {
           </motion.button>
           <motion.button
             onClick={() =>
-              handleLiked(single.Song_Name, single.Song, single.id)
+              handleLiked(single.Song_Name, single.Song, single._id,single.Song_Image)
             }
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}

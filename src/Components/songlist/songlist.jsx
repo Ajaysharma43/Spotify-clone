@@ -23,6 +23,8 @@ function Likedsongs() {
         const Password = sessionStorage.getItem('Password');
         const response = await axios.post(`${linkUrl}/GetUserData`, { Username, Password });
         setUserData(response.data);
+        console.log(userData);
+        
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -90,6 +92,7 @@ function Likedsongs() {
                   transition={{ duration: 0.3 }}
                 >
                   <Link to={`/single/${item.id}`} className="block mb-2">
+                  <img src={item.Song} className='w-full h-full'/>
                     <h2 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{item.name}</h2>
                   </Link>
                   <motion.button

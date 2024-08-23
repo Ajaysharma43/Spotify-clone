@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const linkUrl = import.meta.env.VITE_API_URL;
 
@@ -84,7 +85,9 @@ const Signup = ({ darkMode }) => {
               darkMode ? 'bg-opacity-75' : ''
             }`}
           >
+            <Link to={'/login'}>
             Sign Up
+            </Link>
           </button>
         </form>
       </div>

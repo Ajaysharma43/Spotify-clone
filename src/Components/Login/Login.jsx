@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -145,6 +145,12 @@ const Login = ({ darkMode }) => {
             Login
           </button>
         </form>
+        <motion.div
+        initial={{opacity:0}}
+        animate={{opacity:1}}
+        transition={{duration:0.5}}
+        className="bg-red-100 text-red-800 border border-red-200 py-3 px-9 space-y-3"
+        ><Link to={`/signup`}>don't have an account? Signup</Link></motion.div>
         <ToastContainer
           position="top-right"
           autoClose={5000}
