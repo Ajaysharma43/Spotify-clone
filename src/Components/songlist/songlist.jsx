@@ -92,7 +92,7 @@ function Likedsongs() {
                   transition={{ duration: 0.3 }}
                 >
                   <Link to={`/single/${item.id}`} className="block mb-2">
-                  <img src={item.Song} className='w-full h-full'/>
+                  <img src={item.Image} className='w-full h-full'/>
                     <h2 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{item.name}</h2>
                   </Link>
                   <motion.button
