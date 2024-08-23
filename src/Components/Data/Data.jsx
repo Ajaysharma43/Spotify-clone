@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addSong, removeSong } from "../../features/songs/songslice";
 import { FaHeart, FaRegHeart, FaSun, FaMoon } from "react-icons/fa";
 import LoadingBar from "react-top-loading-bar";
+import Particles from "react-tsparticles";
 
 const url  = import.meta.env.VITE_API_URL;
 
@@ -48,7 +49,90 @@ function NewData() {
       shadow={true}
       background="blue"
       />
-      <div className="container mx-auto py-8">
+      
+      {/* Add Particles component */}
+      <Particles
+        options={{
+          background: {
+            color: {
+              value: darkMode ? "#0d47a1" : "#ffffff",
+            },
+          },
+          fpsLimit: 60,
+          interactivity: {
+            events: {
+              onClick: {
+                enable: true,
+                mode: "push",
+              },
+              onHover: {
+                enable: true,
+                mode: "repulse",
+              },
+              resize: true,
+            },
+            modes: {
+              bubble: {
+                distance: 400,
+                duration: 2,
+                opacity: 0.8,
+                size: 40,
+              },
+              push: {
+                quantity: 4,
+              },
+              repulse: {
+                distance: 200,
+                duration: 0.4,
+              },
+            },
+          },
+          particles: {
+            color: {
+              value: "#ffffff",
+            },
+            links: {
+              color: "#ffffff",
+              distance: 150,
+              enable: true,
+              opacity: 0.5,
+              width: 1,
+            },
+            collisions: {
+              enable: true,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outMode: "bounce",
+              random: false,
+              speed: 6,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 800,
+              },
+              value: 80,
+            },
+            opacity: {
+              value: 0.5,
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              random: true,
+              value: 5,
+            },
+          },
+          detectRetina: true,
+        }}
+        className="absolute inset-0 z-0"
+      />
+
+      <div className="container mx-auto py-8 relative z-10">
         <div className="flex justify-end mb-4">
           <motion.button
             onClick={toggleDarkMode}
