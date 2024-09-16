@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useRef } from 'react';
 
+const url  = import.meta.env.VITE_API_URL;
+
 const SongUpload = () => {
 
   const SongRef = useRef(null);
@@ -18,7 +20,7 @@ const SongUpload = () => {
     const SongGenre = SongGenreRef.current.value;
     console.log(SongName);
 
-    await axios.post('https://spotify-clone-backend-f1ve.onrender.com/SongUpload',{Song,SongImage,SongName,SongArtist,SongGenre});
+    await axios.post(`url/SongUpload`,{Song,SongImage,SongName,SongArtist,SongGenre});
   }
 
 
