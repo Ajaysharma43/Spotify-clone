@@ -20,7 +20,7 @@ const SongUpload = () => {
     const SongGenre = SongGenreRef.current.value;
     console.log(SongName);
 
-    await axios.post(`url/SongUpload`,{Song,SongImage,SongName,SongArtist,SongGenre});
+    await axios.post(`${url}/SongUpload`,{Song,SongImage,SongName,SongArtist,SongGenre});
   }
 
 
