@@ -4,6 +4,7 @@ import { removeSong } from "../../features/songs/songslice";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaRegHeart, FaSun, FaMoon } from "react-icons/fa";
+import LoadingBar from "react-top-loading-bar";
 import axios from "axios";
 
 const linkUrl = import.meta.env.VITE_API_URL;
@@ -13,6 +14,7 @@ function Likedsongs() {
   const dispatch = useDispatch();
   const [darkMode, setDarkMode] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [progress,setprogress] = useState();
   const navigate = useNavigate();
   const cardRefs = useRef([]);
 
@@ -25,7 +27,9 @@ function Likedsongs() {
           Username,
           Password,
         });
+        setprogress(60)
         setUserData(response.data);
+        setprogress(100)
         console.log(userData);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -41,6 +45,7 @@ function Likedsongs() {
     const data = song.Song;
     const Username = sessionStorage.getItem("Username");
     const Password = sessionStorage.getItem("Password");
+    setprogress(0)
 
     const response = await axios.post(`${linkUrl}/RemoveLikedSongs`, {
       id,
@@ -49,6 +54,7 @@ function Likedsongs() {
       Username,
       Password,
     });
+    setprogress(30)
     console.log(response.data);
     if (response.data == "removed") {
       navigate(0);
@@ -71,6 +77,13 @@ function Likedsongs() {
           : "bg-gradient-to-br from-purple-600 to-indigo-600"
       }`}
     >
+      <LoadingBar 
+      color="green"
+      progress={progress}
+      height={4}
+      shadow={true}
+      background="blue"
+      />
       <div className="max-w-7xl w-full mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-500">
         <div className="flex justify-end mb-4">
           <motion.button

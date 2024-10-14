@@ -3,11 +3,12 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 
 const UserData = () => {
+  const url  = import.meta.env.VITE_API_URL;
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('https://spotify-clone-backend-f1ve.onrender.com/users/1')
+    axios.get(`${url}/users/1`)
       .then((response) => {
         setUserData(response.data);
         setLoading(false);

@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast, Slide } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const linkUrl = import.meta.env.VITE_API_URL;
 
@@ -9,19 +11,85 @@ const Signup = ({ darkMode }) => {
   const Username = useRef(null);
   const Password = useRef(null);
   const Email = useRef(null);
+  const navigate = useNavigate();
 
   const Setdata = async () => {
 
     const Name = Username.current.value;
     const password = Password.current.value;
     const email = Email.current.value;
+    if(!Name && !password && !email)
+      {
+        toast.error("Name , password and email is missing", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+      else if(!Name && !password)
+      {
+        toast.error("Name and password is missing", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+      else if(!Name && !email)
+        {
+          toast.error("Name and email is missing", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Slide,
+          });
+        }
+      else
+      {
+        try {
+          const user = await axios.post(`${linkUrl}/SignUp`, { Name, password, email });
+          console.log(user.data);
+          
+          if(user.data == 'existed')
+          {
+            toast.error("user already existed", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Slide,
+            });
+          }
+          else
+          {
+            console.log("Data saved");
+          }
+        } catch (error) {
+          console.error("Error saving data", error);
+        }
+      }
     
-    try {
-      await axios.post(`${linkUrl}/signup`, { Name, password, email });
-      console.log("Data saved");
-    } catch (error) {
-      console.error("Error saving data", error);
-    }
+    
   };
 
   return (
@@ -35,7 +103,6 @@ const Signup = ({ darkMode }) => {
     >
       <div className="max-w-md w-full p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1>
-        <form className="space-y-4">
           <div>
             <label htmlFor="name" className="block mb-1">
               Name
@@ -85,11 +152,21 @@ const Signup = ({ darkMode }) => {
               darkMode ? 'bg-opacity-75' : ''
             }`}
           >
-            <Link to={'/login'}>
             Sign Up
-            </Link>
           </button>
-        </form>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition={Slide}
+        />
       </div>
     </motion.div>
   );

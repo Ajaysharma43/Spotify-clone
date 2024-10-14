@@ -25,6 +25,36 @@ function Single() {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    const UpdateHistory = async () => {
+      const response = await axios.get(`${linkUrl}/SongsData/${id}`);
+        console.log(response.data);
+
+        let Songid = response.data.data._id;
+        let Songname = response.data.data.Song_Name;
+        let Song = response.data.data.Song;
+        let SongImage = response.data.data.Song_Image;
+        let username = sessionStorage.getItem("Username");
+        let password = sessionStorage.getItem("Password");
+
+        const result = await axios.post(`${linkUrl}/UpdateHistory`,{Songid,Songname,Song,SongImage,username,password})
+    }
+    const History = async () => {
+      try {
+        const response = await axios.get(`${linkUrl}/SongsData/${id}`);
+        console.log(response.data);
+
+        let Songid = response.data.data._id;
+        let Songname = response.data.data.Song_Name;
+        let Song = response.data.data.Song;
+        let SongImage = response.data.data.Song_Image;
+        let username = sessionStorage.getItem("Username");
+        let password = sessionStorage.getItem("Password");
+
+        const result = await axios.post(`${linkUrl}/History`,{Songid,Songname,Song,SongImage,username,password})
+      } catch (error) {}
+    };
+
     const getSingle = async () => {
       try {
         const response = await axios.get(`${linkUrl}/SongsData/${id}`);
@@ -39,14 +69,16 @@ function Single() {
 
     const GetData = async () => {
       try {
-        const response = await axios.get(`${linkUrl}/SongsData`);
+        const response = await axios.get(`${linkUrl}/GetAllSongs`);
         console.log(response.data.data);
         SetData(response.data.data);
       } catch (error) {
         console.error("error fetching data: ", error);
       }
     };
-
+    
+    UpdateHistory();
+    History();
     getSingle();
     GetData();
   }, [id]);
@@ -287,7 +319,12 @@ function Single() {
           </motion.button>
           <motion.button
             onClick={() =>
-              handleLiked(single.Song_Name, single.Song, single._id,single.Song_Image)
+              handleLiked(
+                single.Song_Name,
+                single.Song,
+                single._id,
+                single.Song_Image
+              )
             }
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}

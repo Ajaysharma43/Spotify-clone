@@ -25,54 +25,9 @@ const Login = ({ darkMode }) => {
     const name = Username.current.value;
     const password = Password.current.value;
     console.log(name);
-
-    try {
-      const response = await axios.post(`${url}/Login`, {
-        name,
-        password,
-      });
-      console.log(response.data.message);
-      setdata(response.data.message);
-      if (response.data.message == 'verified') {
-        toast.success("Logged in", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Slide,
-        });
-        sessionStorage.setItem('isAuthenticated','Authenticated',{expires:1});
-
-        sessionStorage.setItem('Username',name);
-        sessionStorage.setItem('Password',password);
-
-        
-        setTimeout(() => {
-          navigate('/');
-        }, 5000);
-        
-      }
-      else
-      {
-        toast.error("Login failed", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Slide,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Login failed. Please try again.", {
+    if(!name && !password)
+    {
+      toast.error("username and password is missing", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -84,6 +39,97 @@ const Login = ({ darkMode }) => {
         transition: Slide,
       });
     }
+    else if(!name)
+    {
+      toast.error("username is missing", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+    }
+    else if(!password)
+    {
+      toast.error("passoword is missing", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+    }
+    else
+    {
+      try {
+        const response = await axios.post(`${url}/Login`, {
+          name,
+          password,
+        });
+        console.log(response.data.message);
+        setdata(response.data.message);
+        if (response.data.message == 'verified') {
+          toast.success("Logged in", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Slide,
+          });
+          sessionStorage.setItem('isAuthenticated','Authenticated',{expires:1});
+  
+          sessionStorage.setItem('Username',name);
+          sessionStorage.setItem('Password',password);
+  
+          
+          setTimeout(() => {
+            navigate('/');
+          }, 5000);
+          
+        }
+        else
+        {
+          toast.error("Login failed", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Slide,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Login failed. Please try again.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+        });
+      }
+    }
+
+    
   };
 
   return (
@@ -135,6 +181,7 @@ const Login = ({ darkMode }) => {
             />
           </div>
           <button
+          onClick={handleSubmit}
             type="submit"
             className={`w-full py-3 px-4 rounded-lg focus:outline-none  ${
               darkMode

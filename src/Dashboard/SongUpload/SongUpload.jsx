@@ -1,9 +1,8 @@
 import axios from 'axios';
 import React, { useRef } from 'react';
 
-const url  = import.meta.env.VITE_API_URL;
-
 const SongUpload = () => {
+  const url  = import.meta.env.VITE_API_URL;
 
   const SongRef = useRef(null);
   const SongImageRef = useRef(null);
