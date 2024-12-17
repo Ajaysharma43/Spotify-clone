@@ -26,23 +26,23 @@ function Single() {
 
   useEffect(() => {
 
-    const UpdateHistory = async () => {
-      const response = await axios.get(`${linkUrl}/SongsData/${id}`);
-        console.log(response.data);
+    // const UpdateHistory = async () => {
+    //   const response = await axios.get(`${linkUrl}/SongsData/${id}`);
+    //     console.log(response.data);
 
-        let Songid = response.data.data._id;
-        let Songname = response.data.data.Song_Name;
-        let Song = response.data.data.Song;
-        let SongImage = response.data.data.Song_Image;
-        let username = sessionStorage.getItem("Username");
-        let password = sessionStorage.getItem("Password");
+    //     let Songid = response.data.data._id;
+    //     let Songname = response.data.data.Song_Name;
+    //     let Song = response.data.data.Song;
+    //     let SongImage = response.data.data.Song_Image;
+    //     let username = sessionStorage.getItem("Username");
+    //     let password = sessionStorage.getItem("Password");
 
-        const result = await axios.post(`${linkUrl}/UpdateHistory`,{Songid,Songname,Song,SongImage,username,password})
-    }
+    //     const result = await axios.post(`${linkUrl}/UpdateHistory`,{Songid,Songname,Song,SongImage,username,password})
+    // }
     const History = async () => {
       try {
         const response = await axios.get(`${linkUrl}/SongsData/${id}`);
-        console.log(response.data);
+        console.log(response.data.data);
 
         let Songid = response.data.data._id;
         let Songname = response.data.data.Song_Name;
@@ -77,7 +77,7 @@ function Single() {
       }
     };
     
-    UpdateHistory();
+    // UpdateHistory();
     History();
     getSingle();
     GetData();

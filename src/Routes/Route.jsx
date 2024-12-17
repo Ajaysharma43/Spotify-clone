@@ -7,6 +7,7 @@ import Signup from "../Components/Signup/Signup";
 import Footer from "../Components/Footer/Footer";
 import DataUploadPage from "../Dashboard/AdminPages/DataUploadPage/DataUploadPage";
 import UserDataPage from "../Dashboard/AdminPages/UserDataPages/UserDataPage";
+import History from "../Components/History/History";
 
 const MyRoutes = () =>{
     let element = useRoutes([
@@ -17,7 +18,8 @@ const MyRoutes = () =>{
         {path:"/Signup",element:<Signup/>},
         {path:"/Footer",element:<Footer/>},
         {path:"/DataUploadPage",element:<DataUploadPage/>},
-        {path:"/UserDataPage",element:<UserDataPage/>}
+        {path:"/UserDataPage",element:<UserDataPage/>},
+        {path:"/History",element:<History/>}
     ])
 
     return element;

@@ -45,22 +45,40 @@ function Likedsongs() {
     const data = song.Song;
     const Username = sessionStorage.getItem("Username");
     const Password = sessionStorage.getItem("Password");
-    setprogress(0)
-
-    const response = await axios.post(`${linkUrl}/RemoveLikedSongs`, {
-      id,
-      name,
-      data,
-      Username,
-      Password,
-    });
-    setprogress(30)
-    console.log(response.data);
-    if (response.data == "removed") {
-      navigate(0);
+    setprogress(0);
+  
+    try {
+      // Make an API call to remove the song
+      const response = await axios.post(`${linkUrl}/RemoveLikedSongs`, {
+        id,
+        name,
+        data,
+        Username,
+        Password,
+      });
+      setprogress(30);
+  
+      console.log(response.data);
+  
+      if (response.data === "removed") {
+        // Filter out the song from the list
+        const updatedSongs = userData.Likedsongs.filter((item) => item.id !== id);
+  
+        // Update the state with the new song list
+        setUserData((prevData) => ({
+          ...prevData,
+          Likedsongs: updatedSongs,
+        }));
+  
+        console.log("Updated Songs List: ", updatedSongs);
+      }
+    } catch (error) {
+      console.error("Error removing song:", error);
+    } finally {
+      setprogress(100);
     }
   };
-
+  
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
