@@ -21,16 +21,16 @@ const Navbar = () => {
           Logout
         </Link>
         <Link
-          to="/signup"
-          className="px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600 transition duration-300"
-        >
-          Sign Up
-        </Link>
-        <Link
           to="/songs"
           className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600 transition duration-300"
         >
           Liked Songs
+        </Link>
+        <Link
+          to="/History"
+          className="px-4 py-2 rounded bg-orange-500 text-white hover:bg-red-600 transition duration-300"
+        >
+          History
         </Link>
       </div>
     </motion.nav>

@@ -85,108 +85,117 @@ function Likedsongs() {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      exit={{ opacity: 0 }}
-      className={`min-h-screen flex flex-col items-center justify-center transition-all duration-500 ${
-        darkMode
-          ? "bg-gradient-to-br from-gray-900 to-black"
-          : "bg-gradient-to-br from-purple-600 to-indigo-600"
-      }`}
-    >
-      <LoadingBar 
-      color="green"
-      progress={progress}
-      height={4}
-      shadow={true}
-      background="blue"
-      />
-      <div className="max-w-7xl w-full mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-500">
-        <div className="flex justify-end mb-4">
-          <motion.button
-            onClick={toggleDarkMode}
-            className={`px-4 py-2 rounded-lg ${
-              darkMode ? "bg-gray-800 text-white" : "bg-gray-200 text-gray-800"
-            } hover:bg-opacity-75 focus:outline-none`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.3 }}
-          >
-            {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
-          </motion.button>
-        </div>
-        <h1
-          className={`text-3xl font-bold ${
-            darkMode ? "text-black" : "text-gray-800"
-          } mb-6`}
-        >
-          Your Liked Songs
-        </h1>
-        <AnimatePresence>
-          {userData && userData.Likedsongs.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {userData.Likedsongs.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  ref={(el) => (cardRefs.current[index] = el)}
-                  className={`p-4 rounded-lg shadow-md transition-all duration-500 ${
-                    darkMode
-                      ? "bg-gradient-to-t from-gray-700 to-gray-900"
-                      : "bg-gradient-to-t from-white to-gray-200"
-                  }`}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Link to={`/single/${item.id}`} className="block mb-2">
-                    <motion.img
-                      src={item.Image}
-                      className="w-48 h-48 object-cover rounded-lg shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl"
-                      alt={item.name}
-                      whileHover={{ scale: 1.05 }}
-                    />
-                    <h2
-                      className={`text-xl font-semibold ${
-                        darkMode ? "text-white" : "text-gray-800"
-                      }`}
-                    >
-                      {item.name}
-                    </h2>
-                  </Link>
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.5, ease: "easeOut" }}
+  exit={{ opacity: 0 }}
+  className={`min-h-screen flex flex-col items-center justify-center transition-all duration-500 ${
+    darkMode
+      ? "bg-gradient-to-br from-gray-900 to-black"
+      : "bg-gradient-to-br from-purple-600 to-indigo-600"
+  }`}
+>
+  <LoadingBar 
+    color="green"
+    progress={progress}
+    height={4}
+    shadow={true}
+    background="blue"
+  />
 
-                  <motion.button
-                    onClick={() => removeSongHandler(item)}
-                    className={`bg-red-500 transition duration-300 hover:bg-red-600 text-white py-2 px-4 rounded-lg focus:outline-none flex items-center mt-2 ${
-                      darkMode ? "bg-opacity-75" : ""
-                    }`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <FaRegHeart className="mr-2" />
-                    Remove
-                  </motion.button>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+  <div className="max-w-7xl w-full mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-500">
+    {/* Dark Mode Toggle */}
+    <div className="flex justify-end mb-4">
+      <motion.button
+        onClick={toggleDarkMode}
+        className={`px-4 py-2 rounded-lg ${
+          darkMode ? "bg-gray-800 text-white" : "bg-gray-200 text-gray-800"
+        } hover:bg-opacity-75 focus:outline-none`}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ duration: 0.3 }}
+      >
+        {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
+      </motion.button>
+    </div>
+
+    {/* Title */}
+    <h1
+      className={`text-3xl font-bold ${
+        darkMode ? "text-white" : "text-gray-800"
+      } mb-6 text-center`}
+    >
+      Your Liked Songs
+    </h1>
+
+    <AnimatePresence>
+      {userData && userData.Likedsongs.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {userData.Likedsongs.map((item, index) => (
+            <motion.div
+              key={item.id}
+              ref={(el) => (cardRefs.current[index] = el)}
+              className={`p-4 rounded-lg shadow-md transition-all duration-500 ${
+                darkMode
+                  ? "bg-gradient-to-t from-gray-700 to-gray-900"
+                  : "bg-gradient-to-t from-white to-gray-200"
+              }`}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20, scale: 0.9 }}
               transition={{ duration: 0.3 }}
-              className={`text-lg ${darkMode ? "text-black" : "text-gray-800"}`}
             >
-              {userData && userData.Likedsongs.length === 0
-                ? "You haven't liked any songs yet."
-                : "Loading..."}
-            </motion.p>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.div>
+              <Link to={`/single/${item.id}`} className="block mb-2">
+                {/* Image */}
+                <motion.img
+                  src={item.Image}
+                  className="w-32 h-32 object-cover rounded-lg shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl"
+                  alt={item.name}
+                  whileHover={{ scale: 1.05 }}
+                />
+                {/* Song Name */}
+                <h2
+                  className={`text-xl font-semibold ${
+                    darkMode ? "text-white" : "text-gray-800"
+                  } mt-2`}
+                >
+                  {item.name}
+                </h2>
+              </Link>
+
+              {/* Remove Button */}
+              <motion.button
+                onClick={() => removeSongHandler(item)}
+                className={`bg-red-500 transition duration-300 hover:bg-red-600 text-white py-2 px-4 rounded-lg focus:outline-none flex items-center mt-2 ${
+                  darkMode ? "bg-opacity-75" : ""
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+              >
+                <FaRegHeart className="mr-2" />
+                Remove
+              </motion.button>
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className={`text-lg ${darkMode ? "text-white" : "text-gray-800"}`}
+        >
+          {userData && userData.Likedsongs.length === 0
+            ? "You haven't liked any songs yet."
+            : "Loading..."}
+        </motion.p>
+      )}
+    </AnimatePresence>
+  </div>
+</motion.div>
+
   );
 }
 

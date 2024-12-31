@@ -4,18 +4,24 @@ import { motion } from 'framer-motion';
 
 const UserData = () => {
   const url  = import.meta.env.VITE_API_URL;
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${url}/users/1`)
+    const getdata = async () => {
+      const result = await axios.get(`${url}/UsersData`)
       .then((response) => {
-        setUserData(response.data);
+        setUserData(result.data);
+        console.log(userData);
+        
         setLoading(false);
       })
       .catch(() => {
         setLoading(false);
       });
+    }
+    
+      getdata()
   }, []);
 
   return (

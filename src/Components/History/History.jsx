@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const History = () => {
   const linkUrl = import.meta.env.VITE_API_URL;
@@ -52,30 +53,64 @@ const History = () => {
   
   return (
     <>
-      <div className="flex flex-wrap gap-4 w-full h-full">
-        {History.map((History) => (
-          <>
-            <div className="w-1/6 h-1/3 border border-black flex flex-wrap shadow-md shadow-white rounded-xl overflow-hidden bg-slate-50">
-              <Link to={`/Single/${History.id}`}>
-                <img src={History.Image} className="w-1/5" />
-                <h1>{History.name}</h1>
-              </Link>
-              <button
-                onClick={() =>
-                  removeSong(
-                    History.id,
-                    History.name,
-                    History.Song,
-                    History.Image
-                  )
-                }
-              >
-                delete
-              </button>
-            </div>
-          </>
-        ))}
-      </div>
+    <motion.div className="flex flex-col items-center bg-gradient-to-b from-blue-900 via-indigo-900 to-gray-900 min-h-screen w-full py-10">
+  {/* Page Container */}
+  <motion.div
+    className="w-full max-w-5xl px-4"
+    transition={{ delay: 0.2, duration: 1 }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+  >
+    <h1 className="text-4xl font-bold text-white mb-8 text-center tracking-wide">
+      Your Listening History
+    </h1>
+
+    {/* History Card List */}
+    <div className="flex flex-col gap-6">
+      {History.map((historyItem) => (
+        <motion.div
+          key={historyItem.id}
+          className="flex items-center bg-gradient-to-r from-gray-800 via-gray-700 to-gray-600 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transform transition duration-500 hover:scale-[1.02]"
+        >
+          {/* Image Section */}
+          <Link to={`/Single/${historyItem.id}`} className="w-28 h-28">
+            <img
+              src={historyItem.Image}
+              alt={historyItem.name}
+              className="w-full h-full object-cover brightness-90 hover:brightness-100 transition duration-300"
+            />
+          </Link>
+
+          {/* Content Section */}
+          <div className="flex-1 p-4 flex flex-col justify-between">
+            <h2 className="text-lg font-semibold text-white truncate">
+              {historyItem.name}
+            </h2>
+
+          </div>
+
+          {/* Action Button */}
+          <div className="p-4">
+            <button
+              onClick={() =>
+                removeSong(
+                  historyItem.id,
+                  historyItem.name,
+                  historyItem.Song,
+                  historyItem.Image
+                )
+              }
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-transform duration-300 hover:scale-105 shadow-md"
+            >
+              Delete
+            </button>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+</motion.div>
+
     </>
   );
 };
